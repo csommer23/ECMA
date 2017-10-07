@@ -11,8 +11,16 @@ class NegociacaoController {
     adicionar(event) {
         event.preventDefault();
     
+        let data = new Date(
+            ...this._inputData.value.split('-')
+            .map((item, indece) => {
+                if(indece === 1) { item--; }
+                return item;
+            })
+        );
+
         let negociacao = new Negociacao(
-            this._inputData.value.replace(/-/g,','),
+            data,
             parseInt(this._inputQuantidade.value),
             parseFloat(this._inputValor.value)
         );
