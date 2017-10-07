@@ -9,22 +9,14 @@ class NegociacaoController {
     }
 
     adicionar(event) {
-        event.preventDefault();
-    
-        let data = new Date(
-            ...this._inputData.value.split('-')
-            .map((item, indece) => {
-                if(indece === 1) { item--; }
-                return item;
-            })
-        );
+        event.preventDefault();   
 
         let negociacao = new Negociacao(
-            data,
+            DateConverter.paraData(this._inputData.value),
             parseInt(this._inputQuantidade.value),
             parseFloat(this._inputValor.value)
         );
 
-        console.log(negociacao);
+        console.log(DateConverter.paraTexto(negociacao.data));
     }
 }
