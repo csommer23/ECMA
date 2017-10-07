@@ -1,3 +1,3 @@
 let controller = new NegociacaoController();
 
-document.querySelector('.form').addEventListener('submit',controller.adicionar);
+document.querySelector('.form').addEventListener('submit', controller.adicionar.bind(controller));
