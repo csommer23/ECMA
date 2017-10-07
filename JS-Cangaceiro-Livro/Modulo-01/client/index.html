@@ -44,6 +44,13 @@
             </tfoot>
         </table>
         
-        <script	src="app/index.js"></script>
+        <script	src="app/domain/negociacao/Negociacao.js"></script>
+        <script>
+        var negociacao = new Negociacao(new Date(), 100, 20);
+
+            negociacao.data.setDate(11);
+
+            console.log(negociacao.data);
+        </script>
     </body>
 </html>
