@@ -11,13 +11,20 @@ class NegociacaoController {
         this._negociacoesView = new NegociacoesView('#negociacoes');
 
         this._negociacoesView.update(this._negociacoes);
+
+        this._mensagens = new Mensagem();
+
+        this._mensagemView = new MensagemView('#mensagemView');
+        this._mensagemView.update(this._mensagens);
     }
 
     adicionar(event) {
         event.preventDefault();  
 
         this._negociacoes.adicionar(this._criarNegociacao());
+        this._mensagens.texto = 'Negociação adicionada com sucesso';
         this._negociacoesView.update(this._negociacoes);
+        this._mensagemView.update(this._mensagens);
         this._limparFormulario();
     }
 
@@ -34,5 +41,10 @@ class NegociacaoController {
             parseInt(this._inputQuantidade.value),
             parseFloat(this._inputValor.value)
         );
+    }
+
+    apagar() {
+        this._negociacoes.esvazia();
+        this._negociacoesView.update(this._negociacoes);
     }
 }
