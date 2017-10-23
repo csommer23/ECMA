@@ -46,5 +46,7 @@ class NegociacaoController {
     apagar() {
         this._negociacoes.esvazia();
         this._negociacoesView.update(this._negociacoes);
+        this._mensagens.texto = 'Negociação apagadas com sucesso';
+        this._mensagemView.update(this._mensagens);
     }
 }

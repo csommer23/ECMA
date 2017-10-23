@@ -2,6 +2,7 @@ class Negociacoes {
 
     constructor() {
         this._negociacoes = [];
+        Object.freeze(this);
     }
 
     adicionar(negociacao) {
