@@ -7,24 +7,22 @@ class NegociacaoController {
         this._inputQuantidade = $('#quantidade');
         this._inputValor = $('#valor');       
 
-        const self = this;
-        this._negociacoes = new Proxy(new Negociacoes(),{
-            get(target, prop, receiver) {                    
-                if(typeof(target[prop]) == typeof(Function) && ['adicionar', 'esvazia'].includes(prop)) {
-                    return function() {                            
-                        target[prop].apply(target, arguments);
-                        self._negociacoesView.update(target);
-                    }
-                } else
-                    return target[prop];
-            }
-        });
+        
+        this._negociacoes = ProxyFactory.create(
+            new Negociacoes(),
+            ['adicionar','esvazia'],
+            model => this._negociacoesView.update(model)
+        );
 
         this._negociacoesView = new NegociacoesView('#negociacoes');
 
         this._negociacoesView.update(this._negociacoes);
 
-        this._mensagens = new Mensagem();
+        this._mensagens = ProxyFactory.create(
+            new Mensagem(),
+            ['texto'],
+            model => this._mensagemView.update(model)
+        );
 
         this._mensagemView = new MensagemView('#mensagemView');
         this._mensagemView.update(this._mensagens);
@@ -35,7 +33,6 @@ class NegociacaoController {
 
         this._negociacoes.adicionar(this._criarNegociacao());
         this._mensagens.texto = 'Negociação adicionada com sucesso';
-        this._mensagemView.update(this._mensagens);
         this._limparFormulario();
     }
 
@@ -57,6 +54,5 @@ class NegociacaoController {
     apagar() {
         this._negociacoes.esvazia();
         this._mensagens.texto = 'Negociação apagadas com sucesso';
-        this._mensagemView.update(this._mensagens);
     }
 }
