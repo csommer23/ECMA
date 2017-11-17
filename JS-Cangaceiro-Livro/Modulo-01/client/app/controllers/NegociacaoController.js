@@ -19,6 +19,7 @@ class NegociacaoController {
             'texto'
         );
 
+        this._service = new NegociacaoService();
     }
 
     adicionar(event) {
@@ -60,5 +61,19 @@ class NegociacaoController {
     apagar() {
         this._negociacoes.esvazia();
         this._mensagens.texto = 'Negociação apagadas com sucesso';
+    }
+
+    importaNegociacoes() {
+        this._service.obterNegociacoesDaSemana((err, negociacoes) => {
+
+            if(err) {
+                this._mensagens.texto = err;
+                return;
+            }
+
+            negociacoes.forEach(negociacao => this._negociacoes.adicionar(negociacao));
+
+            this._mensagens.texto = 'Negociações importada com sucesso!';
+        });
     }
 }
