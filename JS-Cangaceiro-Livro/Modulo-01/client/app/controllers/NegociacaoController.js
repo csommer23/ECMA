@@ -65,30 +65,12 @@ class NegociacaoController {
 
     importaNegociacoes() {
 
-        const negociacoes = [];
-
-        this._service.obterNegociacoesDaSemana()
-            .then(semana => {
-
-                negociacoes.push(...semana);
-
-                return this._service.obterNegociacoesDaAnterior();
-            })
-            .then(anterior => {
-
-                negociacoes.push(...anterior);
-
-                return this._service.obterNegociacoesDaRetrasada();
-            })
-            .then(retrasada => {
-
-                negociacoes.push(...retrasada);
-
-                negociacoes.forEach(negociacao => this._negociacoes.adicionar(negociacao));
+        this._service.obterNegociacoesDoPeriodo()
+            .then(negociacoes => {
                 
+                negociacoes.forEach(negociacao => this._negociacoes.adicionar(negociacao));
+
                 this._mensagens.texto = 'Negociações importada com sucesso!';
-            })
-            .catch(err => this._mensagens.texto = err);
-        
+            }).catch(err => this._mensagens.texto = err);        
     }
 }

@@ -5,6 +5,18 @@ class NegociacaoService {
         this._http = new HttpService();
     }
 
+    obterNegociacoesDoPeriodo() {
+
+        return Promise.all([
+            this.obterNegociacoesDaSemana(),
+            this.obterNegociacoesDaAnterior(),
+            this.obterNegociacoesDaRetrasada()
+        ]).then(periodo => periodo.reduce((novoArray, item) => novoArray.concat(item),[]))        
+        .catch(err => { 
+            throw new Error('Não foi possível obter as negociações do periodo'); 
+        });
+    }
+
     obterNegociacoesDaSemana() {
 
         return this._http
