@@ -20,6 +20,21 @@ class NegociacaoController {
         );
 
         this._service = new NegociacaoService();
+
+        this._init();        
+    }
+
+    _init() {
+
+        getNegociacaoDao()
+            .then(dao => dao.listaTodos())
+            .then(negociacoes => {
+
+                negociacoes.forEach(negociacao => {
+                    this._negociacoes.adicionar(negociacao);
+                })
+            })
+            .catch(err => this._mensagens.texto = err)
     }
 
     adicionar(event) {
@@ -27,19 +42,25 @@ class NegociacaoController {
         try {
             event.preventDefault();  
             
-            this._negociacoes.adicionar(this._criarNegociacao());
-            this._mensagens.texto = 'Negociação adicionada com sucesso';
-            this._limparFormulario();
+            const negociacao = this._criarNegociacao();
+
+            getNegociacaoDao()
+                .then(dao => dao.adiciona(negociacao))
+                .then(() => {
+
+                    this._negociacoes.adicionar(negociacao);
+                    this._mensagens.texto = 'Negociação adicionada com sucesso';
+                    this._limparFormulario();
+                })
+                .catch(err => this._mensagens.texto = err);            
 
         } catch(err) {
-            console.log(err);
-            console.log(err.stack);
+
             if(err instanceof DataInvalidaException)
                 this._mensagens.texto = err.message;
             else
                 this._mensagens.texto = 'Um erro não esperado aconteceu.';
         }
-
         
     }
 
@@ -59,8 +80,16 @@ class NegociacaoController {
     }
 
     apagar() {
-        this._negociacoes.esvazia();
-        this._mensagens.texto = 'Negociação apagadas com sucesso';
+
+        getNegociacaoDao()
+            .then(dao => dao.apagaTodos())
+            .then(() => {
+
+                this._negociacoes.esvazia();
+                this._mensagens.texto = 'Negociação apagadas com sucesso';
+            })
+            .catch(err => this._mensagens.texto = err);
+
     }
 
     importaNegociacoes() {
