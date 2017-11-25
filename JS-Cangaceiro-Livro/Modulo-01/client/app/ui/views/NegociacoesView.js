@@ -1,7 +1,18 @@
-class NegociacoesView extends View {
+System.register(['./View.js', '../converters/DateConverter.js'], function (_export, _context) {
+    "use strict";
 
-    template(model) {
-        return `
+    var View, DateConverter;
+    return {
+        setters: [function (_ViewJs) {
+            View = _ViewJs.View;
+        }, function (_convertersDateConverterJs) {
+            DateConverter = _convertersDateConverterJs.DateConverter;
+        }],
+        execute: function () {
+            class NegociacoesView extends View {
+
+                template(model) {
+                    return `
         <table	class="table table-hover table-bordered">
             <thead>
                 <tr>
@@ -12,24 +23,28 @@ class NegociacoesView extends View {
                 </tr>
             </thead>
             <tbody>
-            ${ model.paraArray().map((negociacao) =>
-                `
+            ${model.paraArray().map(negociacao => `
                     <tr>
-                        <td>${ DateConverter.paraTexto(negociacao.data) }</td>
-                        <td>${ negociacao.quantidade }</td>
-                        <td>${ negociacao.valor }</td>
-                        <td>${ negociacao.volume }</td>
+                        <td>${DateConverter.paraTexto(negociacao.data)}</td>
+                        <td>${negociacao.quantidade}</td>
+                        <td>${negociacao.valor}</td>
+                        <td>${negociacao.volume}</td>
                     </tr>
-                `
-            ).join('')}
+                `).join('')}
             </tbody>
             <tfoot> 
                 <tr>
                     <td colspan=3></td>
-                    <td>${ model.volumeTotal }</td>
+                    <td>${model.volumeTotal}</td>
                 </tr>            
             </tfoot>
         </table>
-        `
-    }
-}
+        `;
+                }
+            }
+
+            _export('NegociacoesView', NegociacoesView);
+        }
+    };
+});
+//# sourceMappingURL=NegociacoesView.js.map

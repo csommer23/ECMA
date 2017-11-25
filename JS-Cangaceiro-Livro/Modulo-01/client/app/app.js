@@ -1,9 +1,22 @@
-const controller = new NegociacaoController(),
-      $ = document.querySelector.bind(document);
+System.register(['./controllers/NegociacaoController.js'], function (_export, _context) {
+      "use strict";
 
-$('.form').addEventListener('submit', controller.adicionar.bind(controller));
+      var NegociacaoController;
+      return {
+            setters: [function (_controllersNegociacaoControllerJs) {
+                  NegociacaoController = _controllersNegociacaoControllerJs.NegociacaoController;
+            }],
+            execute: function () {
 
-$('#botao-apaga').addEventListener('click', controller.apagar.bind(controller));
+                  const controller = new NegociacaoController(),
+                        $ = document.querySelector.bind(document);
 
-$('#botao-importa').addEventListener('click', controller.importaNegociacoes.bind(controller));
+                  $('.form').addEventListener('submit', controller.adicionar.bind(controller));
 
+                  $('#botao-apaga').addEventListener('click', controller.apagar.bind(controller));
+
+                  $('#botao-importa').addEventListener('click', controller.importaNegociacoes.bind(controller));
+            }
+      };
+});
+//# sourceMappingURL=app.js.map
