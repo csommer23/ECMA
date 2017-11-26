@@ -1,5 +1,4 @@
 import { NegociacaoController } from './controllers/NegociacaoController.js';
-import { debounce } from './util/Index.js';
 
 
 const controller = new NegociacaoController(),
@@ -9,8 +8,5 @@ $('.form').addEventListener('submit', controller.adicionar.bind(controller));
 
 $('#botao-apaga').addEventListener('click', controller.apagar.bind(controller));
 
-$('#botao-importa').addEventListener('click', debounce(() => {            
-            controller.importaNegociacoes()
-      }, 1000)
-);
+$('#botao-importa').addEventListener('click', controller.importaNegociacoes.bind(controller));
 

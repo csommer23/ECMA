@@ -1,15 +1,14 @@
 import { Negociacoes, NegociacaoService, Negociacao } from '../domain/Index.js';
 import { NegociacoesView, MensagemView,	Mensagem, DateConverter } from '../ui/Index.js';
-import { getNegociacaoDao, Bind, getExceptionMessage } from '../util/Index.js';
+import { getNegociacaoDao, Bind, getExceptionMessage, debounce, controller } from '../util/Index.js';
 
+@controller('#data', '#quantidade', '#valor')
 export class NegociacaoController {
 
-    constructor() {
-        let $ = document.querySelector.bind(document);
-        
-        this._inputData = $('#data');
-        this._inputQuantidade = $('#quantidade');
-        this._inputValor = $('#valor');       
+    
+    constructor(_inputData, _inputQuantidade, _inputValor) {
+
+        Object.assign(this, { _inputData, _inputQuantidade, _inputValor });     
         
         this._negociacoes = new Bind(
             new Negociacoes(),
@@ -44,6 +43,7 @@ export class NegociacaoController {
         }
     }
 
+    @debounce
     async adicionar(event) {
 
         try {
@@ -93,6 +93,7 @@ export class NegociacaoController {
 
     }
 
+    @debounce(1500)
     async importaNegociacoes() {
 
         try {
