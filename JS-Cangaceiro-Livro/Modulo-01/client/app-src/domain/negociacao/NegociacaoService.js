@@ -1,5 +1,6 @@
 import { HttpService } from '../../util/HttpService.js';
 import { Negociacao } from './Negociacao.js';
+import { ApplicationException } from '../../ui/converters/ApplicationException.js';
 
 export class NegociacaoService {
 
@@ -8,19 +9,22 @@ export class NegociacaoService {
         this._http = new HttpService();
     }
 
-    obterNegociacoesDoPeriodo() {
+    async obterNegociacoesDoPeriodo() {
 
-        return Promise.all([
-            this.obterNegociacoesDaSemana(),
-            this.obterNegociacoesDaAnterior(),
-            this.obterNegociacoesDaRetrasada()
-        ]).then(periodo => 
-            periodo.reduce((novoArray, item) => novoArray.concat(item),[])
-                    .sort((a, b) => b.data.getTime() - b.data.getTime())
-        )        
-        .catch(err => { 
-            throw new Error('Não foi possível obter as negociações do periodo'); 
-        });
+        try {
+
+            let periodo = await Promise.all([
+                this.obterNegociacoesDaSemana(),
+                this.obterNegociacoesDaAnterior(),
+                this.obterNegociacoesDaRetrasada()
+            ]);
+
+            return periodo.reduce((novoArray, item) => novoArray.concat(item),[])
+            .sort((a, b) => b.data.getTime() - b.data.getTime())
+
+        } catch(err) {
+            throw new ApplicationException('Não foi possível obter as negociações do periodo');
+        }
     }
 
     obterNegociacoesDaSemana() {
@@ -32,7 +36,7 @@ export class NegociacaoService {
                             return dados.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
                         },
                         err => { 
-                            throw new Error('Não foi possível obter as negociações da semana');
+                            throw new ApplicationException('Não foi possível obter as negociações da semana');
                         }
                     );
         
@@ -47,7 +51,7 @@ export class NegociacaoService {
                             return dados.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
                         },
                         err => { 
-                            throw new Error('Não foi possível obter as negociações da anterior');
+                            throw new ApplicationException('Não foi possível obter as negociações da anterior');
                         }
                     );
     }
@@ -61,7 +65,7 @@ export class NegociacaoService {
                                     return dados.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor));
                                 },
                                 err => { 
-                                    throw new Error('Não foi possível obter as negociações da retrasada');
+                                    throw new ApplicationException('Não foi possível obter as negociações da retrasada');
                                 }
                             );
             }

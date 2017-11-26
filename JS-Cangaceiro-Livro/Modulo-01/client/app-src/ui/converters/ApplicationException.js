@@ -5,3 +5,20 @@ export class ApplicationException extends Error {
         this.name = this.constructor.name;
     }
 }
+
+const exception = ApplicationException;
+
+export function isApplicationException(err) {
+
+    return err instanceof exception || Object.getPrototypeOf(err) instanceof exception;
+}
+
+export function getExceptionMessage(erro) {
+
+    if(isApplicationException(err)) {
+        return err.message;
+    } else {
+        return 'Não foi possível realizar a operação';
+    }
+
+}
