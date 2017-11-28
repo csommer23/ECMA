@@ -3,12 +3,12 @@ import { Negociacao } from './domain/Index.js';
 
 
 const	negociacao = new Negociacao(new Date(), 1, 200);
-const	cabecalhos = new Headers();
-cabecalhos.set('Content-Type', 'application/json');
 
 const	config = {	
       method: 'POST',
-      headers: cabecalhos,
+      headers: {
+            'Content-Type' : 'application/json'
+      },
       body: JSON.stringify(negociacao)
 };
 

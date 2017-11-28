@@ -1,6 +1,6 @@
 import { Negociacoes, NegociacaoService, Negociacao } from '../domain/Index.js';
-import { NegociacoesView, MensagemView,	Mensagem, DateConverter } from '../ui/Index.js';
-import { getNegociacaoDao, Bind, getExceptionMessage, debounce, controller } from '../util/Index.js';
+import { NegociacoesView, MensagemView,	Mensagem, DateConverter, getExceptionMessage } from '../ui/Index.js';
+import { getNegociacaoDao, Bind, debounce, controller } from '../util/Index.js';
 
 @controller('#data', '#quantidade', '#valor')
 export class NegociacaoController {

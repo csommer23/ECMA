@@ -1,6 +1,12 @@
+import { obrigatorio } from '../../util/Index.js';
+
 export class Negociacao {
 
-    constructor(_data, _quantidade, _valor) {
+    constructor(
+            _data = obrigatorio('data'),
+            _quantidade = obrigatorio('quantidade'),
+            _valor = obrigatorio('valor')
+        ) {
 
         Object.assign(this, {
             _quantidade,
