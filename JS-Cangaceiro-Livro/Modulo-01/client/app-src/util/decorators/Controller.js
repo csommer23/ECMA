@@ -8,11 +8,30 @@ export function controller(...seletores) {
 
         const construtorNovo = function() {
 
-            return new construtorOriginal(...elements);
+            const instance = new construtorOriginal(...elements);
+
+            Object
+            .getOwnPropertyNames(construtorOriginal.prototype)
+            .forEach(property => {
+                if (Reflect.hasMetadata('bindEvent', instance, property)) {
+                    associaEvento(instance, Reflect.getMetadata('bindEvent', instance, property));
+                }
+            });
+
+            return instance;
         };
 
         construtorNovo.prototype = construtorOriginal.prototype;    
 
         return construtorNovo;
     };
+}
+
+function associaEvento(instance, metadado) {
+        document
+            .querySelector(metadado.selector)
+            .addEventListener(metadado.event, event => {		
+                if(metadado.prevent) event.preventDefault();
+                    instance[metadado.propertyKey](event);
+            });
 }
