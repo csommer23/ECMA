@@ -16,7 +16,7 @@ const	config = {
       body: JSON.stringify(negociacao)
 };
 
-fetch('http://localhost:3000/negociacoes', config)
+fetch(`${SERVICE_URL}/negociacoes`, config)
       .then(() => console.log('Dado enviado com sucesso'));
 
 const controller = new NegociacaoController();
