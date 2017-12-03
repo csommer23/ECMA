@@ -1,4 +1,4 @@
-const stores = ['negociacoes'];
+const stores = ['negociacoes','teste'];
 
 let connection = null,
     close = null;
@@ -11,16 +11,17 @@ export class ConnectionFactory {
 
     static getConnection() {
         return new Promise((resolve, reject) => {
-
+            
             if(connection) resolve(connection);
 
-            const openRequest = indexedDB.open('jscangaceiro');
+            const openRequest = indexedDB.open('jscangaceiro', 2);
 
-            openRequest.onupgradeneeded = e => {
+            openRequest.onupgradeneeded = e => {               
                 ConnectionFactory._createStores(e.target.result);
             };
 
             openRequest.onsuccess = e => {
+                
                 connection = e.target.result;
 
                 close = connection.close.bind(connection);
@@ -32,16 +33,15 @@ export class ConnectionFactory {
                 resolve(connection);
             };
 
-            openRequest.onerror = e => {
+            openRequest.onerror = e => {                
                 reject(e.target.error.name);
             };
         });
     }
 
     static _createStores(connection) {
-
         stores.forEach(store => {
-            if(connection.objetoStoreNames.contains(store))
+            if(!!connection.objetoStoreNames && connection.objetoStoreNames.contains(store))
                 connection.deleteObjectStore(store);
 
             connection.createObjectStore(store, { autoIncrement: true });
